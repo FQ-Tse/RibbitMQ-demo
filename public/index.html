@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Socket.IO + RabbitMQ Demo</title>
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+<body>
+<h1>Socket.IO + RabbitMQ Demo</h1>
+<button id="sendMessage">Send Message</button>
+<ul id="messages"></ul>
+
+<script>
+    const socket = io('http://localhost:3000');
+
+    // 发送消息
+    document.getElementById('sendMessage').addEventListener('click', () => {
+        const message = { text: 'Hello from client!', timestamp: Date.now() };
+        socket.emit('sendMessage', message, (ackResponse) => {
+            console.log('Server acknowledgment:', ackResponse);
+        });
+    });
+
+    // 接收广播消息
+    socket.on('broadcastMessage', (message) => {
+        console.log('Received broadcast message:', message);
+
+        const li = document.createElement('li');
+        li.textContent = `Broadcast: ${message.text} at ${new Date(message.timestamp).toLocaleTimeString()}`;
+        document.getElementById('messages').appendChild(li);
+        // 发送确认回调
+        socket.emit('messageAcknowledged', { text: 'Message received', timestamp: Date.now() });
+    });
+</script>
+</body>
+</html>
