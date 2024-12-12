@@ -15,7 +15,7 @@ amqp.connect('amqp://localhost:5672', (error, connection) => {
 
         // 确保队列存在
         channel.assertQueue(queue, {
-            durable: false // 队列和交换机的持久化
+            durable: true // 队列和交换机的持久化
         });
 
         // 从队列中消费消息

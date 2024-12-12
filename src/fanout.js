@@ -1,6 +1,6 @@
 // 消息发布
 import amqplib from 'amqplib'
-const connection = await amqplib.connect('amqp://localhost:5672')
+const connection = await amqplib.connect('amqp://127.0.0.1:5672')
 //创建一个频道
 const channel = await connection.createChannel()
 //声明一个交换机
